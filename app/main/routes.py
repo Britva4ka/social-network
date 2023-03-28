@@ -18,3 +18,13 @@ def index():
 
     # call special function to render template with passed context
     return render_template("index.html", **context)
+
+
+@bp.route("/about")
+def about():
+    context = {
+        "title": "ABOUT US",
+        "text": "blablabla"
+    }
+    return render_template('about.html', **context)
+
