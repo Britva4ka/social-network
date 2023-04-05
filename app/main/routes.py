@@ -1,5 +1,8 @@
+from app import db
 from app.main import bp
 from flask import render_template
+
+from app.models import User
 
 
 @bp.route("/")
@@ -9,6 +12,7 @@ def index():
     View function to render home page of the 'Social Network' website
     :return:
     """
+    user = db.session.query(User).first()
 
     # sample template context to render
     context = {
