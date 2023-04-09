@@ -29,6 +29,38 @@
                 {% endfor %}
               </div>
               <div class="form-group">
+                {{ form.first_name.label(class="form-label") }}
+                {{ form.first_name(class="form-control") }}
+                {% for error in form.first_name.errors %}
+                  <div class="alert alert-danger">{{ error }}</div>
+                {% endfor %}
+                <small class="form-text text-muted">{{ form.first_name.description }}</small>
+              </div>
+              <div class="form-group">
+                {{ form.last_name.label(class="form-label") }}
+                {{ form.last_name(class="form-control") }}
+                {% for error in form.last_name.errors %}
+                  <div class="alert alert-danger">{{ error }}</div>
+                {% endfor %}
+                <small class="form-text text-muted">{{ form.last_name.description }}</small>
+              </div>
+              <div class="form-group">
+                {{ form.facebook.label(class="form-label") }}
+                {{ form.facebook(class="form-control") }}
+                {% for error in form.facebook.errors %}
+                  <div class="alert alert-danger">{{ error }}</div>
+                {% endfor %}
+                <small class="form-text text-muted">{{ form.facebook.description }}</small>
+              </div>
+              <div class="form-group">
+                {{ form.linkedin.label(class="form-label") }}
+                {{ form.linkedin(class="form-control") }}
+                {% for error in form.linkedin.errors %}
+                  <div class="alert alert-danger">{{ error }}</div>
+                {% endfor %}
+                <small class="form-text text-muted">{{ form.linkedin.description }}</small>
+              </div>
+              <div class="form-group">
                 {{ form.password.label(class="form-label") }}
                 {{ form.password(class="form-control") }}
                 {% for error in form.password.errors %}

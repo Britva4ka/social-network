@@ -33,6 +33,11 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('main.about') }}">About</a>
                 </li>
+                {% if current_user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('user.profile', username=current_user.username) }}">Profile</a>
+                </li>
+                {% endif %}
             </ul>
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item me-2">

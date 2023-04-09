@@ -37,4 +37,8 @@ class RegisterForm(LoginForm):
             validators.EqualTo("password", message="Passwords should match")
         ]
     )
+    first_name = StringField("First Name", description='Optional')
+    last_name = StringField("Last Name", description='Optional')
+    facebook = StringField('Facebook', description='Optional')
+    linkedin = StringField('LinkedIn', description='Optional')
     submit = SubmitField("Register")

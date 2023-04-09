@@ -1,8 +1,8 @@
-from app import db
+# from app import db
 from app.main import bp
 from flask import render_template
 
-from app.models import User
+# from app.models import Post
 
 
 @bp.route("/")
@@ -12,16 +12,11 @@ def index():
     View function to render home page of the 'Social Network' website
     :return:
     """
-    user = db.session.query(User).first()
-
-    # sample template context to render
-    context = {
-        "user": {"username": "akushyn"},
-        "title": "Hillel"
-    }
+    # posts = db.session.query(Post).order_by(Post.created_at.desc()).all()
+    posts = 'lol'
 
     # call special function to render template with passed context
-    return render_template("index.html", **context)
+    return render_template("index.html", posts=posts)
 
 
 @bp.route("/about")
@@ -31,4 +26,3 @@ def about():
         "text": "blablabla"
     }
     return render_template('about.html', **context)
-

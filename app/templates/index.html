@@ -1,14 +1,5 @@
 <!--extend content from base.html file-->
 {% extends "base.html" %}
 
-<!--override block title -->
-{% block title %}
-    {% if title %}
-        {{title}}
-    {% endif %}
-{% endblock %}
-
-<!--override content block behaviour-->
 {% block content %}
-    {{ user.username }}
 {% endblock %}
