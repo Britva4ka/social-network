@@ -1,9 +1,12 @@
+import base64
 from datetime import datetime
 from hashlib import md5
-
 from app import db
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
+import os
+from PIL import Image
+import io
 
 
 class BaseModel(db.Model):
@@ -19,6 +22,7 @@ class User(BaseModel, UserMixin):
     email = db.Column(db.String, unique=True, index=True)
     password = db.Column(db.String, nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    avatar = db.Column(db.String(120), unique=True, nullable=True)
 
     posts = db.relationship(
         "Post", backref="author", uselist=True, lazy="dynamic", cascade="all,delete"
@@ -36,9 +40,21 @@ class User(BaseModel, UserMixin):
     # list of users that you follow
     following = db.relationship("Follow", backref="follower", foreign_keys="Follow.follower_id")
 
-    def avatar(self, size):
-        digest = md5(self.email.lower().encode('utf-8')).hexdigest()
-        return f'https://www.gravatar.com/avatar/{digest}?d=identicon&s={size}'
+    def set_avatar(self, size):
+        if self.avatar:
+            # return url_for('uploads', filename=f'{self.avatar}')
+            from config import Config
+            avatar_path = os.path.join(Config.UPLOADED_PHOTOS_DEST, self.avatar)
+            with open(avatar_path, 'rb') as f:
+                img = Image.open(io.BytesIO(f.read()))
+                img.thumbnail((size, size))
+                img_byte_arr = io.BytesIO()
+                img.save(img_byte_arr, format='PNG')
+                img_byte_arr = img_byte_arr.getvalue()
+            return f"data:image/png;base64,{base64.b64encode(img_byte_arr).decode()}"
+        else:
+            digest = md5(self.email.lower().encode('utf-8')).hexdigest()
+            return f'https://www.gravatar.com/avatar/{digest}?d=identicon&s={size}'
 
     def set_password(self, password):
         """

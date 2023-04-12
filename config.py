@@ -25,3 +25,4 @@ class Config:
         POSTGRES_HOST,
         POSTGRES_DB
     )
+    UPLOADED_PHOTOS_DEST = os.getenv("UPLOADED_PHOTOS_DEST")

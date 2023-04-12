@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, TextAreaField, SubmitField
 from wtforms.validators import Length
+from flask_wtf.file import FileField, FileAllowed
 
 
 class ProfileForm(FlaskForm):
@@ -10,3 +11,4 @@ class ProfileForm(FlaskForm):
     facebook = StringField('Facebook')
     linkedin = StringField('LinkedIn')
     submit = SubmitField('Submit')
+    photo = FileField('Upload Photo', validators=[FileAllowed(['jpg', 'png', 'jpeg'])])

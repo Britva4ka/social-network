@@ -5,18 +5,20 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
 from datetime import datetime
+from flask_uploads import UploadSet, configure_uploads, IMAGES
 
 
 db = SQLAlchemy()
 migrate = Migrate()
 login_manager = LoginManager()
+photos = UploadSet('photos', IMAGES)
 
 
 def create_app():
     app = Flask(__name__)
 
     app.config.from_object(Config)
-
+    configure_uploads(app, photos)
     db.init_app(app)
     migrate.init_app(app, db)
     login_manager.init_app(app)
@@ -33,6 +35,9 @@ def create_app():
 
     from .user import bp as user_bp
     app.register_blueprint(user_bp)
+
+    from .post import bp as post_bp
+    app.register_blueprint(post_bp)
 
     from . import models  # noqa
 
