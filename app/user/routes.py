@@ -1,5 +1,5 @@
 import os
-
+from werkzeug.utils import secure_filename
 from app import db
 from app.models import User, Post, Follow
 from app.post.forms import PostForm
@@ -57,7 +57,7 @@ def profile(username):
         user.profile.linkedin = form.linkedin.data
         user.profile.facebook = form.facebook.data
         user.profile.bio = form.bio.data
-        filename = f"{user.username}_{user.id}_{form.photo.data.filename}"
+        filename = f"{user.username}_{user.id}_{secure_filename(form.photo.data.filename)}"
         if user.avatar:
             os.remove(os.path.join(Config.UPLOADED_PHOTOS_DEST, user.avatar))
         user.avatar = filename
