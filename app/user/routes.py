@@ -9,6 +9,7 @@ from flask_login import login_required, current_user
 from flask_wtf.csrf import generate_csrf
 from app.user.forms import ProfileForm
 from config import Config
+from datetime import datetime, timedelta
 
 
 @bp.route("/blog")
@@ -34,6 +35,12 @@ def blog():
 def profile(username):
 
     user = db.session.query(User).filter(User.username == username).first_or_404()
+
+    if user.profile.last_seen > datetime.utcnow() - timedelta(minutes=5):
+        status = 'Online'
+    else:
+        status = 'Last seen: ' + user.profile.last_seen.strftime('%Y-%m-%d %H:%M:%S')
+
     following = User.query.join(
         Follow, Follow.followee_id == User.id
     ).filter(
@@ -78,7 +85,7 @@ def profile(username):
         form.facebook.data = user.profile.facebook
         form.bio.data = user.profile.bio
     return render_template('user/profile.html', user=user, form=form, is_following=is_following, csrf_token=csrf_token,
-                           followers=followers, following=following)
+                           followers=followers, following=following, status=status)
 
 
 @bp.route('/follow/<username>', methods=['GET', 'POST'])

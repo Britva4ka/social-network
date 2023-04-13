@@ -10,7 +10,7 @@
                     <h5>{{ user.username }}</h5>
                     <p class="text-muted">{{ user.email }}</p>
                 </div>
-                 <p class="small">Last seen: {{ user.profile.last_seen.strftime('%Y-%m-%d %H:%M:%S') }}</p>
+                 <p class="small">{{ status }}</p>
             </div>
             <div class="col-md-8">
                 {% if user == current_user %}
