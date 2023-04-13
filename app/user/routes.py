@@ -95,15 +95,15 @@ def follow(username):
     followee = User.query.filter_by(username=username).first()
     # followee_id = followee.id
     if followee is None:
-        flash('User {} not found.'.format(username), category="error")
-        return redirect(url_for('index'))
+        flash(f'User {username} not found.', category="error")
+        return redirect(request.referrer)
     if followee == current_user:
         flash('You cannot follow yourself!', category="error")
-        return redirect(url_for('user', username=username))
+        return redirect(url_for(request.referrer))
     follow = Follow(follower=current_user, followee=followee)
     db.session.add(follow)
     db.session.commit()
-    flash('You are now following {}!'.format(username), category="success")
+    flash(f'You are now following {username}!', category="success")
     return redirect(request.referrer)
 
 
@@ -113,13 +113,13 @@ def unfollow(username):
     followee = User.query.filter_by(username=username).first()
     user = User.query.filter_by(username=username).first()
     if user is None:
-        flash('User {} not found.'.format(username), category="error")
-        return redirect(url_for('index'))
+        flash(f'User {username} not found.', category="error")
+        return redirect(request.referrer)
     if user == current_user:
         flash('You cannot unfollow yourself!', category="error")
-        return redirect(url_for('user', username=username))
+        return redirect(request.referrer)
     follow = Follow.query.filter_by(follower=current_user, followee=followee).first()
     db.session.delete(follow)
     db.session.commit()
-    flash('You are no longer following {}.'.format(username), category="success")
+    flash(f'You are no longer following {username}.', category="success")
     return redirect(request.referrer)
