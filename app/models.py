@@ -44,7 +44,7 @@ class User(BaseModel, UserMixin):
         if self.avatar:
             # return url_for('uploads', filename=f'{self.avatar}')
             from config import Config
-            avatar_path = os.path.join(Config.UPLOADED_PHOTOS_DEST, self.avatar)
+            avatar_path = os.path.join(Config.UPLOADED_PHOTOS_DEST, self.avatar)  # chat_gpt :)
             with open(avatar_path, 'rb') as f:
                 img = Image.open(io.BytesIO(f.read()))
                 img.thumbnail((size, size))

@@ -52,6 +52,9 @@ def profile(username):
     ).filter(
         Follow.followee_id == user.id
     ).all()
+    # Code below returns Follow object, not User.
+    # following = user.followers
+    # followers = user.following
 
     form = ProfileForm()
     is_following = Follow.query.filter_by(follower_id=current_user.id, followee_id=user.id).first()

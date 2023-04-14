@@ -99,14 +99,24 @@
                 <ul class="follower-list">
                     {% for follower in followers %}
                         {% if loop.index <= 5 %}
-                            <li><a href="{{ url_for('user.profile', username=follower.username) }}">{{ follower.username }}</a></li>
+                            <li>
+                                <a href="{{ url_for('user.profile', username=follower.username) }}">
+                                    <img src="{{ follower.set_avatar(24) }}" class="rounded-circle mr-1">
+                                    {{ follower.username }}
+                                </a>
+                            </li>
                         {% else %}
-                            <li class="hidden-follower" style="display:none;"><a href="{{ url_for('user.profile', username=follower.username) }}">{{ follower.username }}</a></li>
+                            <li class="hidden-follower" style="display:none;">
+                                <a href="{{ url_for('user.profile', username=follower.username) }}">
+                                    <img src="{{ follower.set_avatar(24) }}" class="rounded-circle mr-1">
+                                    {{ follower.username }}
+                                </a>
+                            </li>
                         {% endif %}
                     {% endfor %}
                 </ul>
                 {% if followers|length > 5 %}
-                    <button class="show-followers">Show all</button>
+                    <button id="show-followers-btn" class="btn btn-primary">Show all</button>
                 {% endif %}
             </div>
             <div class="col-md-4">
@@ -114,28 +124,38 @@
                 <ul class="following-list">
                     {% for followed in following %}
                         {% if loop.index <= 5 %}
-                            <li><a href="{{ url_for('user.profile', username=followed.username) }}">{{ followed.username }}</a></li>
+                            <li>
+                                <a href="{{ url_for('user.profile', username=followed.username) }}">
+                                    <img src="{{ followed.set_avatar(24) }}" class="rounded-circle mr-1">
+                                    {{ followed.username }}
+                                </a>
+                            </li>
                         {% else %}
-                            <li class="hidden-following" style="display:none;"><a href="{{ url_for('user.profile', username=followed.username) }}">{{ followed.username }}</a></li>
+                            <li class="hidden-following" style="display:none;">
+                                <a href="{{ url_for('user.profile', username=followed.username) }}">
+                                    <img src="{{ followed.set_avatar(24) }}" class="rounded-circle mr-1">
+                                    {{ followed.username }}
+                                </a>
+                            </li>
                         {% endif %}
                     {% endfor %}
                 </ul>
                 {% if following|length > 5 %}
-                    <button class="show-following">Show all</button>
+                    <button id="show-following-btn" class="btn btn-primary">Show all</button>
                 {% endif %}
             </div>
             <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
             <script>
                 $(document).ready(function() {
-                    $('.show-followers').on('click', function() {
-                        $('.hidden-follower').show();
-                        $('.show-followers').hide();
-                    });
+                    $('#show-followers-btn').on('click', function() {
+                    $('.hidden-follower').show();
+                    $('#show-followers-btn').hide();
+                });
 
-                    $('.show-following').on('click', function() {
-                        $('.hidden-following').show();
-                        $('.show-following').hide();
-                    });
+                $('#show-following-btn').on('click', function() {
+                    $('.hidden-following').show();
+                    $('#show-following-btn').hide();
+                });
                 });
             </script>
         </div>
