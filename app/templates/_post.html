@@ -29,8 +29,8 @@
             <div class="d-flex align-items-center">
                 <a href="{{ url_for('user.profile', username=post.author.username) }}">
                     <img src="{{ post.author.set_avatar(32) }}" class="rounded-circle mr-1">
+                    {{ post.author.username }}
                 </a>
-                <span>{{ post.author.username }}</span>
             </div>
         </div>
     </div>
