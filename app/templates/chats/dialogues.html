@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container">
+        <h1>Chat List</h1>
+        {% if users %}
+        <ul class="list-group">
+            {% for user in users %}
+                <li class="list-group-item">
+                    <a href="{{ url_for('chats.chat', username=user.username) }}">
+                        <img src="{{ user.set_avatar(24) }}" class="rounded-circle mr-3">
+                        {{ user.username }}
+                    </a>
+                </li>
+            {% endfor %}
+        {% else %}
+            <h1>No chats yet...</h1>
+        {% endif %}
+        </ul>
+    </div>
+{% endblock %}

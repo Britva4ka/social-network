@@ -3,7 +3,7 @@ from marshmallow.fields import Nested
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchemaOpts, SQLAlchemyAutoSchema
 
 from app import db
-from app.models import User, Profile
+from app.models import User, Profile, Post, Like, Dislike, Message
 
 
 class BaseOpts(SQLAlchemyAutoSchemaOpts):
@@ -39,6 +39,29 @@ class ProfileSchema(BaseSchema):
 class UserSchema(BaseSchema):
     class Meta:
         model = User
-        exclude = ('password',)
+        exclude = ('password', 'avatar',)
 
     profile = Nested(ProfileSchema(), many=False)
+
+
+class LikeSchema(BaseSchema):
+    class Meta:
+        model = Like
+
+
+class DislikeSchema(BaseSchema):
+    class Meta:
+        model = Dislike
+
+
+class PostSchema(BaseSchema):
+    class Meta:
+        model = Post
+
+    likes = Nested(LikeSchema(), many=True)
+    dislikes = Nested(DislikeSchema(), many=True)
+
+
+class MessageSchema(BaseSchema):
+    class Meta:
+        model = Message

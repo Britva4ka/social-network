@@ -15,7 +15,6 @@ def create():
     if request.method == "POST":
         if form.validate_on_submit():
             # Create a new post object
-            print(form.title.data, form.content.data)
             post = Post(title=form.title.data, content=form.content.data, author=current_user)
             # Add the post to the database
             db.session.add(post)

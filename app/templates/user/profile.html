@@ -82,16 +82,20 @@
                     <p>LinkedIn: <strong>{{ user.profile.linkedin }}</strong></p>
                     <p>About Me: <strong>{{ user.profile.bio }}</strong></p>
                     {% if is_following %}
-                        <form action="{{ url_for('user.unfollow', username=user.username) }}" method="post">
+                        <form action="{{ url_for('user.unfollow', username=user.username) }}" method="post" class="d-inline-block mr-2">
                             <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                             <button class="btn btn-sm btn-danger" type="submit">Unfollow {{ user.username }}</button>
                         </form>
                     {% else %}
-                        <form action="{{ url_for('user.follow', username=user.username) }}" method="post">
+                        <form action="{{ url_for('user.follow', username=user.username) }}" method="post" class="d-inline-block mr-2">
                             <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                             <button class="btn btn-sm btn-primary" type="submit">Follow {{ user.username }}</button>
                         </form>
                     {% endif %}
+                    <form action="{{ url_for('chats.chat', username=user.username) }}" method="get" class="d-inline-block float-right">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                        <button class="btn btn-sm btn-primary" type="submit">Chat with {{ user.username }}</button>
+                    </form>
                 {% endif %}
             </div>
             <div class="col-md-4">

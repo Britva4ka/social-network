@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block content %}
+  <h1>Chat with {{ user.username }}
+      <a href="{{ url_for('user.profile', username=user.username) }}">
+          <img src="{{ user.set_avatar(72) }}" class="rounded-circle mr-1">
+      </a>
+  </h1>
+  <div class="row">
+    <div class="col-md-8">
+      <h3>Messages:</h3>
+      {% if messages %}
+        <ul class="list-unstyled">
+          {% for message in messages %}
+            <li>
+              <div class="card bg-light">
+                <div class="card-body">
+                  <p class="card-text">{{ message.content }}</p>
+                </div>
+                <div class="card-footer text-muted">
+                  Sent by {{ message.sender.username }} on {{ message.created_at.strftime('%Y-%m-%d %H:%M:%S') }}
+                </div>
+              </div>
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p>No messages yet</p>
+      {% endif %}
+      <hr>
+      <h3>Send a message:</h3>
+      <form method="POST">
+        {{ form.hidden_tag() }}
+        {{ form.content.label }}
+        {{ form.content(size=50, rows=4, class_='form-control') }}
+        {% for error in form.content.errors %}
+          <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+        {{ form.submit(class_='btn btn-primary mt-2') }}
+      </form>
+    </div>
+  </div>
+{% endblock %}

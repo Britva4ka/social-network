@@ -67,13 +67,14 @@ def profile(username):
         user.profile.linkedin = form.linkedin.data
         user.profile.facebook = form.facebook.data
         user.profile.bio = form.bio.data
-        filename = f"{user.username}_{user.id}_{secure_filename(form.photo.data.filename)}"
-        if user.avatar:
-            os.remove(os.path.join(Config.UPLOADED_PHOTOS_DEST, user.avatar))
-        user.avatar = filename
-        # form.photo.data.save(os.path.join(Config.UPLOADED_PHOTOS_DEST), filename)
-        file_path = os.path.join(Config.UPLOADED_PHOTOS_DEST, filename)
-        form.photo.data.save(file_path)
+        if form.photo.data:
+            filename = f"{user.username}_{user.id}_{secure_filename(form.photo.data.filename)}"
+            if user.avatar:
+                os.remove(os.path.join(Config.UPLOADED_PHOTOS_DEST, user.avatar))
+            user.avatar = filename
+            # form.photo.data.save(os.path.join(Config.UPLOADED_PHOTOS_DEST), filename)
+            file_path = os.path.join(Config.UPLOADED_PHOTOS_DEST, filename)
+            form.photo.data.save(file_path)
 
         # filename = photos.save(form.photo.data)
         # user.avatar = filename
@@ -102,7 +103,7 @@ def follow(username):
         return redirect(request.referrer)
     if followee == current_user:
         flash('You cannot follow yourself!', category="error")
-        return redirect(url_for(request.referrer))
+        return redirect(request.referrer)
     follow = Follow(follower=current_user, followee=followee)
     db.session.add(follow)
     db.session.commit()

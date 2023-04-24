@@ -10,13 +10,3 @@ hillel_python_pro
 * U can switch db from postresql to another in config by yourself.
 * To create fake users $ flask fake users *amount*
 * If FATAL:  password authentication failed for user - create postgres superuser named system user with system password
-* If ImportError: cannot import name 'secure_filename' from 'werkzeug' - 
-in venv/lib/site-packages/flask_uploads.py change 
-
-*from werkzeug import secure_filename, FileStorage* 
-
-to
-
-*from werkzeug.utils import secure_filename*
-
-*from werkzeug.datastructures import  FileStorage* 

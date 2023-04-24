@@ -35,10 +35,15 @@ class User(BaseModel, UserMixin):
     )
 
     # list of users that follow you
-    followers = db.relationship("Follow", backref="followee", foreign_keys="Follow.followee_id")
+    followers = db.relationship("Follow", backref="followee", foreign_keys="Follow.followee_id", cascade="all,delete")
 
     # list of users that you follow
-    following = db.relationship("Follow", backref="follower", foreign_keys="Follow.follower_id")
+    following = db.relationship("Follow", backref="follower", foreign_keys="Follow.follower_id", cascade="all,delete")
+
+    message_sender = db.relationship(
+        "Message", backref="sender", foreign_keys="Message.sender_id", cascade="all,delete")
+    message_receiver = db.relationship(
+        "Message", backref="receiver", foreign_keys="Message.receiver_id", cascade="all,delete")
 
     def set_avatar(self, size):
         if self.avatar:
@@ -155,4 +160,12 @@ class Follow(db.Model):
         db.ForeignKey('user.id', name="fk_follows_followee_id"),
         primary_key=True
     )
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+
+class Message(BaseModel):
+    __tablename__ = 'messages'
+    sender_id = db.Column(db.Integer, db.ForeignKey('user.id'), name="fk_sender_id", nullable=False)
+    receiver_id = db.Column(db.Integer, db.ForeignKey('user.id'), name="fk_receiver_id", nullable=False)
+    content = db.Column(db.String(1000))
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
