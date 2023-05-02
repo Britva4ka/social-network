@@ -26,3 +26,4 @@ class Config:
         POSTGRES_DB
     )
     UPLOADED_PHOTOS_DEST = os.getenv("UPLOADED_PHOTOS_DEST")
+    CSV_DATA_DEST = os.getenv("CSV_DATA_DEST")

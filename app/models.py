@@ -1,6 +1,9 @@
 import base64
 from datetime import datetime
 from hashlib import md5
+
+from sqlalchemy.ext.hybrid import hybrid_property
+
 from app import db
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -97,6 +100,14 @@ class Profile(BaseModel):
 
     user = db.relationship("User", backref=db.backref("profile", uselist=False), uselist=False)
 
+    @hybrid_property
+    def full_name(self):
+        return f'{self.first_name} {self.last_name}'
+
+    @full_name.expression
+    def full_name(cls):
+        return cls.first_name + ' ' + cls.last_name
+
 
 class Post(BaseModel):
     __tablename__ = 'posts'
@@ -165,7 +176,8 @@ class Follow(db.Model):
 
 class Message(BaseModel):
     __tablename__ = 'messages'
-    sender_id = db.Column(db.Integer, db.ForeignKey('user.id'), name="fk_sender_id", nullable=False)
-    receiver_id = db.Column(db.Integer, db.ForeignKey('user.id'), name="fk_receiver_id", nullable=False)
+
+    sender_id = db.Column(db.Integer, db.ForeignKey('user.id', name="fk_sender_id"), nullable=False)
+    receiver_id = db.Column(db.Integer, db.ForeignKey('user.id', name="fk_receiver_id"), nullable=False)
     content = db.Column(db.String(1000))
     created_at = db.Column(db.DateTime, default=datetime.utcnow)

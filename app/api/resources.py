@@ -1,3 +1,4 @@
+from flask_jwt_extended import jwt_required
 from flask_restful import Resource
 from flask import jsonify, request
 from sqlalchemy.exc import IntegrityError
@@ -12,6 +13,8 @@ post_service = PostService()
 
 
 class UsersResource(Resource):
+    method_decorators = [jwt_required()]
+
     def get(self):
 
         ordered = request.args.get('ordered', type=bool)
@@ -44,6 +47,8 @@ class UsersResource(Resource):
 
 
 class UserResource(Resource):
+    method_decorators = [jwt_required()]
+
     def get(self, user_id=None):
         user = user_service.get_by_id(user_id)
         return jsonify(UserSchema().dump(user, many=False))
@@ -61,6 +66,8 @@ class UserResource(Resource):
 
 
 class ProfilesResource(Resource):
+    method_decorators = [jwt_required()]
+
     def get(self):
         profiles = db.session.query(Profile).all()
         return jsonify(ProfileSchema().dump(profiles, many=True))
@@ -68,6 +75,8 @@ class ProfilesResource(Resource):
 
 
 class ProfileResource(Resource):
+    method_decorators = [jwt_required()]
+
     def get(self, profile_id):
         profile = db.session.query(Profile).filter_by(user_id=profile_id).first_or_404()
         return jsonify(ProfileSchema().dump(profile, many=False))
@@ -90,6 +99,7 @@ class PostsResource(Resource):
         posts = db.session.query(Post).all()
         return jsonify(PostSchema().dump(posts, many=True))
 
+    @jwt_required()
     def post(self):
         json_data = request.get_json()
         post = post_service.create(**json_data)
@@ -103,6 +113,7 @@ class PostResource(Resource):
         post = post_service.get_by_id(post_id)
         return jsonify(PostSchema().dump(post, many=False))
 
+    @jwt_required()
     def put(self, post_id):
         json_data = request.get_json()
         json_data['id'] = post_id
@@ -110,6 +121,7 @@ class PostResource(Resource):
         post = post_service.update(json_data)
         return jsonify(PostSchema().dump(post, many=False))
 
+    @jwt_required()
     def delete(self, post_id):
         status = post_service.delete(post_id)
         return jsonify(status=status)
@@ -120,6 +132,7 @@ class UsersPostsResource(Resource):
         posts = db.session.query(Post).filter_by(author_id=user_id). all()
         return jsonify(PostSchema().dump(posts, many=True))
 
+    @jwt_required()
     def post(self, user_id):
         json_data = request.get_json()
         json_data['author_id'] = user_id
@@ -134,6 +147,7 @@ class UsersPostResource(Resource):
         post = db.session.query(Post).filter_by(author_id=user_id, id=post_id).first_or_404()
         return jsonify(PostSchema().dump(post, many=False))
 
+    @jwt_required()
     def post(self, user_id, post_id):
         json_data = request.get_json()
         json_data['author_id'] = user_id
@@ -143,6 +157,7 @@ class UsersPostResource(Resource):
         response.status_code = 201
         return response
 
+    @jwt_required()
     def put(self, user_id, post_id):
         json_data = request.get_json()
         json_data['id'] = post_id
@@ -151,6 +166,7 @@ class UsersPostResource(Resource):
         post = post_service.update(json_data)
         return jsonify(PostSchema().dump(post, many=False))
 
+    @jwt_required()
     def delete(self, user_id, post_id):
         post = db.session.query(Post).filter_by(author_id=user_id, id=post_id).first_or_404()
         status = post_service.delete(post.id)
@@ -158,6 +174,8 @@ class UsersPostResource(Resource):
 
 
 class LikesResource(Resource):
+    method_decorators = [jwt_required()]
+
     def get(self):
         likes = db.session.query(Like).all()
         return jsonify(LikeSchema().dump(likes, many=True))
@@ -178,6 +196,8 @@ class LikesResource(Resource):
 
 
 class LikeResource(Resource):
+    method_decorators = [jwt_required()]
+
     def get(self, like_id):
         like = db.session.query(Like).filter(Like.id == like_id).first_or_404()
         return jsonify(LikeSchema().dump(like, many=False))
@@ -191,6 +211,8 @@ class LikeResource(Resource):
 
 
 class DisLikesResource(Resource):
+    method_decorators = [jwt_required()]
+
     def get(self):
         dislikes = db.session.query(Dislike).all()
         return jsonify(DislikeSchema().dump(dislikes, many=True))
@@ -211,6 +233,8 @@ class DisLikesResource(Resource):
 
 
 class DisLikeResource(Resource):
+    method_decorators = [jwt_required()]
+
     def get(self, dislike_id):
         dislike = db.session.query(Dislike).filter(Dislike.id == dislike_id).first_or_404()
         return jsonify(DislikeSchema().dump(dislike, many=False))
@@ -224,6 +248,8 @@ class DisLikeResource(Resource):
 
 
 class MessagesResource(Resource):
+    method_decorators = [jwt_required()]
+
     def get(self):
         messages = db.session.query(Message).all()
         return jsonify(MessageSchema().dump(messages, many=True))
@@ -240,6 +266,8 @@ class MessagesResource(Resource):
 
 
 class MessageResource(Resource):
+    method_decorators = [jwt_required()]
+
     def get(self, message_id):
         message = db.session.query(Message).filter(Message.id == message_id).first_or_404()
         return jsonify(MessageSchema().dump(message, many=False))

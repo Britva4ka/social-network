@@ -31,7 +31,7 @@ class UserService:
         data['profile']['id'] = user.profile.id
         data['profile']['user_id'] = user.id
 
-        user = UserSchema(exclude=('password',)).load(data)
+        user = UserSchema(exclude=('password', 'last_seen', 'created_ad',)).load(data)
         db.session.add(user)
         db.session.commit()
 
@@ -67,7 +67,7 @@ class PostService:
     def update(self, data: dict):
         post = self.get_by_id(data['id'])
         data['author_id'] = post.author_id
-        post = PostSchema().load(data)
+        post = PostSchema(only=('author_id', 'content', 'id', 'title',)).load(data)
         db.session.add(post)
         db.session.commit()
 

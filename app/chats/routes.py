@@ -11,9 +11,17 @@ from app.chats.forms import ChatForm
 @login_required
 def index():
     # hardcode time :)
-    messages = db.session.query(Message).filter(
-        (Message.sender_id == current_user.id) | (Message.receiver_id == current_user.id)
-    ).order_by(Message.created_at.desc()).all()
+    messages = (
+        db.session.query(Message)
+        .filter(
+            db.or_(
+                Message.sender_id == current_user.id,
+                Message.receiver_id == current_user.id
+            )
+        )
+        .order_by(Message.created_at.desc())
+        .all()
+    )
     chats = []
     for message in messages:
         if message.sender_id in chats or message.receiver_id in chats:

@@ -1,4 +1,6 @@
 from flask import Flask
+from flask_jwt_extended import JWTManager
+
 from config import Config
 from flask_login import current_user
 from flask_sqlalchemy import SQLAlchemy
@@ -11,6 +13,7 @@ from flask_uploads import UploadSet, configure_uploads, IMAGES
 db = SQLAlchemy()
 migrate = Migrate()
 login_manager = LoginManager()
+jwt = JWTManager()
 photos = UploadSet('photos', IMAGES)
 
 
@@ -23,6 +26,7 @@ def create_app():
     migrate.init_app(app, db)
     login_manager.init_app(app)
     login_manager.login_view = "auth.login"
+    jwt.init_app(app)
 
     from .auth import bp as auth_bp
     app.register_blueprint(auth_bp)

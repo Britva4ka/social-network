@@ -3,6 +3,7 @@ from flask_restful import Api
 from .resources import UsersResource, UserResource, ProfilesResource, ProfileResource, \
     PostsResource, LikesResource, DisLikesResource, PostResource, UsersPostsResource, UsersPostResource, \
     LikeResource, DisLikeResource, MessagesResource, MessageResource
+from .auth import GenerateTokenResource
 
 bp = Blueprint('api', __name__, url_prefix="/api")
 api = Api(bp)
@@ -21,3 +22,5 @@ api.add_resource(LikeResource, '/likes/<int:like_id>', endpoint="like_details")
 api.add_resource(DisLikeResource, '/dislikes/<int:dislike_id>', endpoint="dislike_details")
 api.add_resource(MessagesResource, '/messages', endpoint="messages_list")
 api.add_resource(MessageResource, '/messages/<int:message_id>', endpoint="message_details")
+
+api.add_resource(GenerateTokenResource, '/generate-token', endpoint='generate_token')
