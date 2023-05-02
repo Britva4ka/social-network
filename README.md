@@ -18,6 +18,8 @@ hillel_python_pro
 
 * API endpoints:
 ```
+/generate-token
+
 /users GET POST
 /users/<int:user_id> GET PUT DELETE
 /profiles GET
