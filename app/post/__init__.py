@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import click
 import pandas as pd
 from flask import Blueprint
@@ -38,4 +40,5 @@ def extract_posts(user_id):
     post_info = sorted(post_info, key=lambda x: x[-1])
     # code below is constant
     df = pd.DataFrame(post_info, columns=['title', 'likes', 'dislikes', 'created_at'])
+    Path(Config.CSV_DATA_DEST).mkdir(parents=True, exist_ok=True)
     df.to_csv(Config.CSV_DATA_DEST+f"{user.username}_posts.csv")

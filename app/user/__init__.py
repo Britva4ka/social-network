@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import pandas as pd
 from config import Config
 from flask import Blueprint
@@ -30,4 +32,5 @@ def extract_users():
     users_info = sorted(users_info)
     # code below is constant
     df = pd.DataFrame(users_info, columns=['username', 'email', 'full_name', 'post_count'])
+    Path(Config.CSV_DATA_DEST).mkdir(parents=True, exist_ok=True)
     df.to_csv(Config.CSV_DATA_DEST+"users_info.csv")
